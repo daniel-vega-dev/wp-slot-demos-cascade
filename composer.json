@@ -3,6 +3,20 @@
     "description": "WordPress plugin that loads slot game demos directly from provider CDNs with a configurable cascade fallback chain.",
     "type": "wordpress-plugin",
     "license": "MIT",
+    "homepage": "https://sobrejuegos.com/",
+    "support": {
+        "issues": "https://github.com/daniel-vega-dev/wp-slot-demos-cascade/issues",
+        "source": "https://github.com/daniel-vega-dev/wp-slot-demos-cascade",
+        "docs": "https://daniel-vega-dev.github.io/wp-slot-demos-cascade/"
+    },
+    "authors": [
+        {
+            "name": "Daniel Vega",
+            "email": "press@sobrejuegos.com",
+            "homepage": "https://sobrejuegos.com/",
+            "role": "Maintainer"
+        }
+    ],
     "keywords": [
         "wordpress",
         "wordpress-plugin",
