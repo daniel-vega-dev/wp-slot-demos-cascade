@@ -1,0 +1,30 @@
+{
+    "name": "slot-demos-cascade/wp-slot-demos-cascade",
+    "description": "WordPress plugin that loads slot game demos directly from provider CDNs with a configurable cascade fallback chain.",
+    "type": "wordpress-plugin",
+    "license": "MIT",
+    "keywords": [
+        "wordpress",
+        "wordpress-plugin",
+        "slot",
+        "casino",
+        "iframe",
+        "demo",
+        "cascade",
+        "fallback"
+    ],
+    "require": {
+        "php": ">=7.4",
+        "composer/installers": "^1.0 || ^2.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "SlotDemosCascade\\": "src/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true
+        }
+    }
+}
