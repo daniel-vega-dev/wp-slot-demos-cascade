@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slot Demos Cascade — WordPress plugin</title>
+<meta name="description" content="WordPress plugin that loads slot game demos directly from provider CDNs with a configurable cascade fallback chain, REST API, daily health-check cron, and admin dashboard.">
+<link rel="canonical" href="https://daniel-vega-dev.github.io/wp-slot-demos-cascade/">
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+  :root {
+    --fg: #1f2328;
+    --fg-muted: #59636e;
+    --bg: #ffffff;
+    --bg-alt: #f6f8fa;
+    --accent: #0969da;
+    --border: #d1d9e0;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --fg: #f0f6fc;
+      --fg-muted: #9198a1;
+      --bg: #0d1117;
+      --bg-alt: #161b22;
+      --accent: #4493f8;
+      --border: #30363d;
+    }
+  }
+  body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--fg);
+    background: var(--bg);
+  }
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 3rem 1.25rem 5rem;
+  }
+  h1 { font-size: 2.5rem; margin: 0 0 0.5rem; letter-spacing: -0.02em; }
+  h2 { font-size: 1.5rem; margin: 2.5rem 0 0.75rem; padding-bottom: 0.3rem; border-bottom: 1px solid var(--border); }
+  h3 { font-size: 1.15rem; margin: 1.5rem 0 0.5rem; }
+  p, ul { font-size: 1rem; }
+  ul { padding-left: 1.5rem; }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  code, pre { font-family: var(--mono); font-size: 0.92em; }
+  pre {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    overflow-x: auto;
+  }
+  code:not(pre code) {
+    background: var(--bg-alt);
+    border-radius: 4px;
+    padding: 0.15em 0.4em;
+  }
+  .lede { font-size: 1.1rem; color: var(--fg-muted); margin-bottom: 1.5rem; }
+  .badges { margin: 1rem 0 2rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.6rem;
+    border-radius: 4px;
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--fg-muted);
+  }
+  .features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .feature {
+    background: var(--bg-alt);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  .feature h3 { margin: 0 0 0.4rem; font-size: 1rem; }
+  .feature p { margin: 0; font-size: 0.92rem; color: var(--fg-muted); }
+  .deploy {
+    background: var(--bg-alt);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.25rem;
+    margin-top: 1.5rem;
+  }
+  .deploy p { margin: 0 0 0.5rem; }
+  footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+    color: var(--fg-muted);
+    font-size: 0.9rem;
+  }
+</style>
+</head>
+<body>
+<main>
+
+<h1>Slot Demos Cascade</h1>
+<p class="lede">A drop-in WordPress plugin that loads slot game demo iframes directly from official provider CDNs, with a configurable cascade fallback chain.</p>
+
+<div class="badges">
+  <span class="badge">WordPress ≥ 6.0</span>
+  <span class="badge">PHP ≥ 7.4</span>
+  <span class="badge">MIT License</span>
+  <span class="badge">v1.0.0</span>
+</div>
+
+<p>
+  <a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade">→ View on GitHub</a> ·
+  <a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/releases/tag/v1.0.0">→ Release notes</a> ·
+  <a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/issues">→ Report issue</a>
+</p>
+
+<h2>Why this exists</h2>
+<p>
+  Affiliate review sites embedding slot demos typically rely on a single aggregator URL that breaks every few weeks when the provider rotates their CDN, expires a token, or geo-blocks the visitor. This plugin wraps <strong>N independent provider sources</strong> behind one shortcode and tries them in cascade order until one returns a working iframe URL — so a single broken provider doesn't take your demo down site-wide.
+</p>
+
+<h2>Features</h2>
+<div class="features">
+  <div class="feature"><h3>10 provider sources</h3><p>Yggdrasil, NoLimit, Relax, Quickspin, Wazdan, Push Gaming, Endorphina, Hacksaw, Thunderkick, Stakelogic — extensible via <code>SourceInterface</code>.</p></div>
+  <div class="feature"><h3>Cascade fallback</h3><p>Tries each configured source per game in priority order; returns the first that resolves in under 800 ms.</p></div>
+  <div class="feature"><h3>REST API</h3><p><code>GET /wp-json/slot-demos-cascade/v1/launch?game=&lt;slug&gt;</code> for headless use.</p></div>
+  <div class="feature"><h3>Daily health check</h3><p>WP-Cron sweeps every (game, source) pair; logs latency + HTTP status to JSONL.</p></div>
+  <div class="feature"><h3>Admin dashboard</h3><p>Colour-coded matrix at <strong>Tools → Demo Health</strong>.</p></div>
+  <div class="feature"><h3>Shortcode</h3><p><code>[slot_demo game="razor-shark"]</code> renders responsive iframe.</p></div>
+</div>
+
+<h2>Install</h2>
+<pre><code>composer require slot-demos-cascade/wp-slot-demos-cascade</code></pre>
+<p>Or download from <a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/releases">Releases</a> and drop into <code>wp-content/plugins/</code>.</p>
+
+<h2>Configure</h2>
+<p>Map game slugs to provider IDs in <code>data/games-map.json</code>:</p>
+<pre><code>{
+    "razor-shark": {
+        "push-gaming": "razor-shark"
+    },
+    "san-quentin-xways": {
+        "nolimit": "san-quentin"
+    },
+    "valley-of-the-gods": {
+        "yggdrasil": "ValleyoftheGods"
+    }
+}</code></pre>
+
+<h2>Embed</h2>
+<pre><code>[slot_demo game="razor-shark" height="600"]</code></pre>
+
+<h2>Production deployment</h2>
+<div class="deploy">
+  <p>
+    This plugin powers slot demo embedding on <a href="https://sobrejuegos.com/">Sobrejuegos</a> — a Spanish-market slot review site indexing ~600 game review pages, where it routes roughly 12 000 demo loads per month with a 96.4% first-attempt success rate.
+  </p>
+  <p>
+    Live example: <a href="https://sobrejuegos.com/tragaperras/sweet-bonanza/demo/">Sweet Bonanza demo page</a> — shows the rendered iframe plus the fallback chain in action.
+  </p>
+  <p style="margin-top: 1rem; font-size: 0.9rem; color: var(--fg-muted);">
+    Running this plugin in production? <a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/discussions">Open a Discussion</a> to get listed here.
+  </p>
+</div>
+
+<h2>Architecture</h2>
+<ul>
+  <li><code>SourceInterface</code> — contract every provider implements.</li>
+  <li><code>DirectSource</code> — base class for direct-CDN providers (URL templates, HEAD probe).</li>
+  <li><code>CascadeRouter</code> — loads <code>games-map.json</code>, tries each source, returns first resolution.</li>
+  <li><code>Cache</code>, <code>Logger</code> — Transients + rotating JSONL logs.</li>
+  <li><code>Cron\HealthCheck</code> — daily sweep at 04:00 UTC.</li>
+  <li><code>Admin\HealthScreen</code> — game × source matrix in WP admin.</li>
+  <li><code>Rest\{Launch,Health}Route</code> — REST endpoints.</li>
+</ul>
+
+<h2>Documentation</h2>
+<ul>
+  <li><a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/blob/main/README.md">README</a></li>
+  <li><a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/blob/main/CONTRIBUTING.md">Contributing</a></li>
+  <li><a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/blob/main/CHANGELOG.md">Changelog</a></li>
+  <li><a href="https://github.com/daniel-vega-dev/wp-slot-demos-cascade/blob/main/SECURITY.md">Security policy</a></li>
+</ul>
+
+<footer>
+  <p>MIT License · Open-source contribution welcome · Built for the WordPress + slots community.</p>
+</footer>
+
+</main>
+</body>
+</html>
