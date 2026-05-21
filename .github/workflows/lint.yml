@@ -1,0 +1,44 @@
+name: Lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  php-syntax:
+    name: PHP syntax check
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version: ['7.4', '8.0', '8.1', '8.2', '8.3']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup PHP ${{ matrix.php-version }}
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+
+      - name: PHP lint (parallel)
+        run: |
+          find . -path ./vendor -prune -o -name "*.php" -print0 \
+            | xargs -0 -n1 -P4 php -l \
+            | grep -v "^No syntax errors" || echo "All PHP files OK"
+
+  json-validate:
+    name: JSON validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate JSON files
+        run: |
+          for f in $(find . -path ./node_modules -prune -o -name "*.json" -print); do
+            python3 -m json.tool "$f" > /dev/null && echo "✓ $f"
+          done
