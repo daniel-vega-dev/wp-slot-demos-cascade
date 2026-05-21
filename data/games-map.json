@@ -1,0 +1,31 @@
+{
+    "_comment": "Example games-map for Slot Demos Cascade. Each entry maps a game key to provider-specific configurations. Add your own games and provider slugs here.",
+
+    "starburst": {
+        "_comment": "Generic example: NetEnt classic. Replace 'direct' value with actual provider's demo URL pattern."
+    },
+
+    "book-of-dead": {
+        "_comment": "Generic example: Play'n GO. Each provider key below is optional; only configured providers will be tried in cascade order."
+    },
+
+    "gates-of-olympus": {
+        "_comment": "Generic example: Pragmatic Play. Use Push Gaming's official demo CDN if you want this provider."
+    },
+
+    "san-quentin-xways": {
+        "nolimit": "san-quentin"
+    },
+
+    "razor-shark": {
+        "push-gaming": "razor-shark"
+    },
+
+    "valley-of-the-gods": {
+        "yggdrasil": "ValleyoftheGods"
+    },
+
+    "hacksaw-game-example": {
+        "hacksaw": "wanted-dead-or-alive"
+    }
+}
